@@ -42,6 +42,7 @@ def main():
                     # Forces installation even if the package is installed at the
                     # system level
                     "--ignore-installed",
+                    "--require-hashes",
                     # Turns off Pip's check to ensure installed binaries are in the
                     # PATH. ROS workspaces take care of setting the PATH, but Pip
                     # doesn't know that.
