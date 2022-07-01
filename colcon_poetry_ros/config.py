@@ -25,14 +25,14 @@ class _EnvironmentVariable(Generic[T]):
 
         if isinstance(self.default, list):
             if value.strip() == "":
-                return []
+                return [] #type: ignore
             else:
                 value_list = value.strip().split(",")
-                return [v.strip() for v in value_list]
+                return [v.strip() for v in value_list] #type: ignore
         elif isinstance(self.default, str):
-            return value
+            return value #type: ignore
         elif isinstance(self.default, bool):
-            return strtobool(value)
+            return strtobool(value) #type: ignore
         else:
             raise NotImplementedError(
                 f"Unsupported environment variable type {type(self.default)}"

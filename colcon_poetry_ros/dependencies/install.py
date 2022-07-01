@@ -61,7 +61,7 @@ def main():
 def _discover_packages(base_paths: List[Path]) -> List[PoetryROSPackage]:
     projects: List[PoetryROSPackage] = []
 
-    potential_packages = []
+    potential_packages: List[Path] = []
     for path in base_paths:
         potential_packages += list(path.glob("*"))
 

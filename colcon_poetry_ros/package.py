@@ -13,7 +13,7 @@ class NotAPoetryROSPackage(Exception):
 class PoetryROSPackage:
     """Contains information on a ROS package defined with Poetry"""
 
-    def __init__(self, path: Path, logger: logging.Logger = logging):
+    def __init__(self, path: Path, logger: logging.Logger = logging.Logger('Logger')):
         """
         :param path: The root path of the Poetry project
         :param logger: A logger to log with!
