@@ -1,8 +1,8 @@
 import os
 from distutils.util import strtobool
-from typing import TypeVar, Generic
+from typing import Generic, TypeVar
 
-T = TypeVar('T')
+T = TypeVar("T")
 
 
 class _EnvironmentVariable(Generic[T]):
@@ -25,14 +25,14 @@ class _EnvironmentVariable(Generic[T]):
 
         if isinstance(self.default, list):
             if value.strip() == "":
-                return [] #type: ignore
+                return []  # type: ignore
             else:
                 value_list = value.strip().split(",")
-                return [v.strip() for v in value_list] #type: ignore
+                return [v.strip() for v in value_list]  # type: ignore
         elif isinstance(self.default, str):
-            return value #type: ignore
+            return value  # type: ignore
         elif isinstance(self.default, bool):
-            return strtobool(value) #type: ignore
+            return strtobool(value)  # type: ignore
         else:
             raise NotImplementedError(
                 f"Unsupported environment variable type {type(self.default)}"

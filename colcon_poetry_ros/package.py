@@ -1,6 +1,6 @@
+import logging
 import subprocess
 from pathlib import Path
-import logging
 from typing import List, Set
 
 import toml
@@ -13,7 +13,7 @@ class NotAPoetryROSPackage(Exception):
 class PoetryROSPackage:
     """Contains information on a ROS package defined with Poetry"""
 
-    def __init__(self, path: Path, logger: logging.Logger = logging.Logger('Logger')):
+    def __init__(self, path: Path, logger: logging.Logger = logging.Logger("Logger")):
         """
         :param path: The root path of the Poetry project
         :param logger: A logger to log with!
@@ -36,9 +36,7 @@ class PoetryROSPackage:
         try:
             self.pyproject = toml.loads(self.pyproject_file.read_text())
         except toml.TomlDecodeError as ex:
-            raise RuntimeError(
-                f"Failed to parse {self.pyproject_file} as a TOML file: {ex}"
-            )
+            raise RuntimeError(f"Failed to parse {self.pyproject_file} as a TOML file: {ex}")
 
         if "tool" not in self.pyproject or "poetry" not in self.pyproject["tool"]:
             logger.debug(
@@ -94,8 +92,7 @@ class PoetryROSPackage:
             )
         except subprocess.CalledProcessError as ex:
             raise RuntimeError(
-                f"Failed to export Poetry dependencies in the requirements.txt format: "
-                f"{ex}"
+                f"Failed to export Poetry dependencies in the requirements.txt format: " f"{ex}"
             )
 
         return result.stdout
@@ -140,4 +137,3 @@ def _parse_requirements_txt(input_: str) -> Set[str]:
             specifications.append(spec)
 
     return set(specifications)
-

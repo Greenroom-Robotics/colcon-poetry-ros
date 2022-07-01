@@ -2,16 +2,13 @@ import shutil
 from pathlib import Path
 
 import toml
-from colcon_core.environment import create_environment_hooks, \
-    create_environment_scripts
+from colcon_core.environment import create_environment_hooks, create_environment_scripts
 from colcon_core.logging import colcon_logger
 from colcon_core.plugin_system import satisfies_version
-from colcon_core.shell import get_command_environment, create_environment_hook
-from colcon_core.task import TaskExtensionPoint
-from colcon_core.task import run
+from colcon_core.shell import create_environment_hook, get_command_environment
+from colcon_core.task import TaskExtensionPoint, run
 
 from colcon_poetry_ros import config
-
 
 logger = colcon_logger.getChild(__name__)
 
@@ -21,7 +18,7 @@ class PoetryBuildTask(TaskExtensionPoint):
 
     def __init__(self):
         super().__init__()
-        satisfies_version(TaskExtensionPoint.EXTENSION_POINT_VERSION, '^1.0')
+        satisfies_version(TaskExtensionPoint.EXTENSION_POINT_VERSION, "^1.0")
 
     async def build(self, *, additional_hooks=None):
         pkg = self.context.pkg
@@ -62,10 +59,7 @@ class PoetryBuildTask(TaskExtensionPoint):
         if poetry_dist.exists():
             shutil.rmtree(str(poetry_dist))
 
-        shutil.move(
-            str(Path(args.path) / "dist"),
-            str(poetry_dist)
-        )
+        shutil.move(str(Path(args.path) / "dist"), str(poetry_dist))
 
         # Find the wheel file that Poetry generated
         wheels = list(poetry_dist.glob("*.whl"))
@@ -108,7 +102,7 @@ class PoetryBuildTask(TaskExtensionPoint):
         # {prefix}/lib/{package_name}
         poetry_script_dir = Path(args.install_base) / "bin"
         if not poetry_script_dir.exists():
-            logger.info(f"Attempting to use .../local/bin instead for poetry_script_dir")
+            logger.info("Attempting to use .../local/bin instead for poetry_script_dir")
             poetry_script_dir = Path(args.install_base) / "local" / "bin"
         ros_script_dir = Path(args.install_base) / "lib" / pkg.name
         if poetry_script_dir.is_dir():
@@ -183,18 +177,11 @@ class PoetryBuildTask(TaskExtensionPoint):
             / "packages"
             / pkg.name
         )
-        package_manifest_path = (
-            Path(args.install_base)
-            / "share"
-            / pkg.name
-            / "package.xml"
-        )
+        package_manifest_path = Path(args.install_base) / "share" / pkg.name / "package.xml"
 
         for destination, sources in data_files.items():
             if not isinstance(sources, list):
-                logger.error(
-                    f"Field '{destination}' in {_DATA_FILES_TABLE} must be an array"
-                )
+                logger.error(f"Field '{destination}' in {_DATA_FILES_TABLE} must be an array")
 
             dest_path = Path(args.install_base) / destination
             dest_path.mkdir(parents=True, exist_ok=True)

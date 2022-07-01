@@ -1,14 +1,14 @@
 import argparse
-from pathlib import Path
-import sys
-from typing import List
-import subprocess
 import logging
+import subprocess
+import sys
+from pathlib import Path
 from tempfile import NamedTemporaryFile
+from typing import List
 
 from colcon_poetry_ros.package_identification.poetry import (
-    PoetryROSPackage,
     NotAPoetryROSPackage,
+    PoetryROSPackage,
 )
 
 
@@ -76,9 +76,7 @@ def _discover_packages(base_paths: List[Path]) -> List[PoetryROSPackage]:
 
     if len(projects) == 0:
         base_paths_str = ", ".join([str(p) for p in base_paths])
-        logging.error(
-            f"No packages were found in the following paths: {base_paths_str}"
-        )
+        logging.error(f"No packages were found in the following paths: {base_paths_str}")
         sys.exit(1)
 
     return projects
@@ -96,7 +94,7 @@ def _parse_args() -> argparse.Namespace:
         type=Path,
         default=[Path.cwd()],
         help="The paths to start looking for Poetry projects in. Defaults to the "
-        "current directory."
+        "current directory.",
     )
 
     parser.add_argument(

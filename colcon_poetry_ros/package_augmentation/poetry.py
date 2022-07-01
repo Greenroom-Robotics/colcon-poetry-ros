@@ -2,10 +2,9 @@ import shutil
 
 import toml
 from colcon_core.package_augmentation import PackageAugmentationExtensionPoint
+from colcon_core.package_augmentation.python import create_dependency_descriptor, logger
 from colcon_core.package_descriptor import PackageDescriptor
 from colcon_core.plugin_system import satisfies_version
-from colcon_core.package_augmentation.python import \
-    create_dependency_descriptor, logger
 
 from colcon_poetry_ros import config
 from colcon_poetry_ros.package_identification.poetry import PoetryROSPackage
@@ -21,9 +20,7 @@ class PoetryPackageAugmentation(PackageAugmentationExtensionPoint):
             "^1.0",
         )
 
-    def augment_package(
-        self, desc: PackageDescriptor, *, additional_argument_names=None
-    ):
+    def augment_package(self, desc: PackageDescriptor, *, additional_argument_names=None):
         if desc.type != "poetry":
             # Some other identifier claimed this package
             return
@@ -32,9 +29,7 @@ class PoetryPackageAugmentation(PackageAugmentationExtensionPoint):
         project.check_lock_file_exists()
 
         if not shutil.which("poetry"):
-            raise RuntimeError(
-                "Could not find the poetry command. Is Poetry installed?"
-            )
+            raise RuntimeError("Could not find the poetry command. Is Poetry installed?")
 
         pyproject_toml = desc.path / "pyproject.toml"
         pyproject = toml.loads(pyproject_toml.read_text())
@@ -48,12 +43,10 @@ class PoetryPackageAugmentation(PackageAugmentationExtensionPoint):
         run_deps = project.get_dependencies(config.run_depends_extras.get())
         test_deps = project.get_dependencies(config.test_depends_extras.get())
 
-        desc.dependencies["build_depends"] = set(
+        desc.dependencies["build_depends"] = {
             create_dependency_descriptor(dep) for dep in build_deps
-        )
-        desc.dependencies["run_depends"] = set(
-            create_dependency_descriptor(dep) for dep in run_deps
-        )
-        desc.dependencies["test_depends"] = set(
+        }
+        desc.dependencies["run_depends"] = {create_dependency_descriptor(dep) for dep in run_deps}
+        desc.dependencies["test_depends"] = {
             create_dependency_descriptor(dep) for dep in test_deps
-        )
+        }

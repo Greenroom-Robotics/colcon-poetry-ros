@@ -1,16 +1,18 @@
 from colcon_core.package_descriptor import PackageDescriptor
-from colcon_core.package_identification import PackageIdentificationExtensionPoint, logger
+from colcon_core.package_identification import (
+    PackageIdentificationExtensionPoint,
+    logger,
+)
 from colcon_core.plugin_system import satisfies_version
 
-from colcon_poetry_ros.package import PoetryROSPackage, NotAPoetryROSPackage
+from colcon_poetry_ros.package import NotAPoetryROSPackage, PoetryROSPackage
 
 
 class PoetryPackageIdentification(PackageIdentificationExtensionPoint):
-    """Identifies Python packages that use Poetry by referencing the pyproject.toml file
-    """
+    """Identifies Python packages that use Poetry by referencing the pyproject.toml file"""
 
     # The priority needs to be higher than RosPackageIdentification and the built-in
-    # Python identification. This identifier supercedes both.
+    # Python identification. This identifier supersedes both.
     PRIORITY = 200
 
     def __init__(self):

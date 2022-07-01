@@ -16,7 +16,7 @@ class PoetryTestTask(TaskExtensionPoint):
 
     def __init__(self):
         super().__init__()
-        satisfies_version(TaskExtensionPoint.EXTENSION_POINT_VERSION, '^1.0')
+        satisfies_version(TaskExtensionPoint.EXTENSION_POINT_VERSION, "^1.0")
 
     async def test(self):
         logger.info("Using the Poetry wrapper for PyTest support")
