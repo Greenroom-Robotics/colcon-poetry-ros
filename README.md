@@ -48,6 +48,8 @@ requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
 ```
 
+Make sure to delete any pre-existing `setup.cfg` file.
+
 Finally, run your build like normal:
 
 ```bash
